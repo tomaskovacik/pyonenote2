@@ -79,6 +79,9 @@ def extract_pages(path) -> list[RealPage] | None:
     None if this file doesn't decode as an FSSHTTPB Data Element Package
     (or the walk hits a structure this module doesn't understand yet) --
     callers should fall back to a heuristic extractor in that case."""
+    path_str = str(path)
+    if '..' in path_str:
+        raise Exception('Invalid file path')
     data = path.read_bytes() if hasattr(path, 'read_bytes') else open(path, 'rb').read()
 
     pkg, _ = fb.parse_packaging_structure(data)
